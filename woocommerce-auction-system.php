@@ -3,7 +3,7 @@
  * Plugin Name: WooCommerce Auction System
  * Description: A custom WooCommerce plugin for managing auctions.
  * Version: 1.0
- * Author: Your Name
+ * Author: Vladimir
  * Text Domain: woocommerce-auction-system
  */
 
