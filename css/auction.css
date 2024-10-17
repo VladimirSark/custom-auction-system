@@ -1,0 +1,4 @@
+function enqueue_auction_styles() {
+    wp_enqueue_style('auction-styles', plugin_dir_url(__FILE__) . 'style.css');
+}
+add_action('wp_enqueue_scripts', 'enqueue_auction_styles');
