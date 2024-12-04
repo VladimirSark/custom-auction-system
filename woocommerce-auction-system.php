@@ -1,8 +1,39 @@
 <?php
-/**
- * Plugin Name: WooCommerce Auction System
- * Description: A custom WooCommerce plugin for managing auctions.
- * Version: 1.0
- * Author: Vladimir12
- * Text Domain: woocommerce-auction-system
- */
+/*
+Plugin Name: Custom Auction System
+Description: A custom auction system integrated with WooCommerce.
+Version: 1.0
+Author: Your Name
+*/
+
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Define plugin constants
+define('CAS_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('CAS_PLUGIN_URL', plugin_dir_url(__FILE__));
+
+// Include necessary files
+include_once CAS_PLUGIN_DIR . 'includes/class-auction-product.php';
+include_once CAS_PLUGIN_DIR . 'includes/class-auction-dashboard.php';
+include_once CAS_PLUGIN_DIR . 'includes/class-auction-websockets.php';
+
+// Initialize the plugin
+function cas_initialize_plugin() {
+    // Register custom product type
+    Auction_Product::register_product_type();
+
+    // Add admin menu for auction dashboard
+    Auction_Dashboard::add_admin_menu();
+
+    // Enqueue scripts and styles
+    add_action('wp_enqueue_scripts', 'cas_enqueue_scripts');
+}
+add_action('plugins_loaded', 'cas_initialize_plugin');
+
+function cas_enqueue_scripts() {
+    wp_enqueue_style('cas-auction-css', CAS_PLUGIN_URL . 'css/auction.css');
+    wp_enqueue_script('cas-auction-js', CAS_PLUGIN_URL . 'js/auction-frontend.js', array('jquery'), null, true);
+}
