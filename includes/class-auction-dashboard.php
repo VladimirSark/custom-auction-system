@@ -3,6 +3,8 @@
 class Auction_Dashboard {
     public static function add_admin_menu() {
         add_action('admin_menu', array(__CLASS__, 'register_auction_menu'));
+        add_action('wp_ajax_start_auction', array(__CLASS__, 'start_auction'));
+        add_action('wp_ajax_end_auction', array(__CLASS__, 'end_auction'));
     }
 
     public static function register_auction_menu() {
@@ -84,7 +86,7 @@ class Auction_Dashboard {
                 echo '<td>' . get_the_title() . '</td>';
                 echo '<td>' . get_the_date() . '</td>';
                 echo '<td>' . esc_html($participants) . ' / ' . esc_html($min_participants) . '</td>';
-                echo '<td><a href="#" class="button">' . __('Start Auction', 'custom-auction-system') . '</a></td>';
+                echo '<td><a href="#" class="button start-auction" data-product-id="' . $product->get_id() . '">' . __('Start Auction', 'custom-auction-system') . '</a></td>';
                 echo '</tr>';
             }
 
@@ -127,7 +129,7 @@ class Auction_Dashboard {
                 echo '<td>' . get_the_title() . '</td>';
                 echo '<td>' . get_the_date() . '</td>';
                 echo '<td>' . esc_html($participants) . '</td>';
-                echo '<td><a href="#" class="button">' . __('End Auction', 'custom-auction-system') . '</a></td>';
+                echo '<td><a href="#" class="button end-auction" data-product-id="' . $product->get_id() . '">' . __('End Auction', 'custom-auction-system') . '</a></td>';
                 echo '</tr>';
             }
 
@@ -170,7 +172,7 @@ class Auction_Dashboard {
                 echo '<td>' . get_the_title() . '</td>';
                 echo '<td>' . get_the_date() . '</td>';
                 echo '<td>' . esc_html($winner) . '</td>';
-                echo '<td><a href="#" class="button">' . __('Contact Winner', 'custom-auction-system') . '</a></td>';
+                echo '<td><a href="#" class="button contact-winner" data-product-id="' . $product->get_id() . '">' . __('Contact Winner', 'custom-auction-system') . '</a></td>';
                 echo '</tr>';
             }
 
@@ -213,7 +215,7 @@ class Auction_Dashboard {
                 echo '<td>' . get_the_title() . '</td>';
                 echo '<td>' . get_the_date() . '</td>';
                 echo '<td>' . esc_html($winner) . '</td>';
-                echo '<td><a href="#" class="button">' . __('Send Payment Reminder', 'custom-auction-system') . '</a></td>';
+                echo '<td><a href="#" class="button send-payment-reminder" data-product-id="' . $product->get_id() . '">' . __('Send Payment Reminder', 'custom-auction-system') . '</a></td>';
                 echo '</tr>';
             }
 
@@ -228,6 +230,26 @@ class Auction_Dashboard {
     public static function display_mail_setup() {
         echo '<h2>' . __('Mail Setup', 'custom-auction-system') . '</h2>';
         // Display mail setup options
+    }
+
+    public static function start_auction() {
+        if (!isset($_POST['product_id']) || !current_user_can('manage_options')) {
+            wp_send_json_error(__('Invalid request', 'custom-auction-system'));
+        }
+
+        $product_id = intval($_POST['product_id']);
+        update_post_meta($product_id, '_auction_status', 'live');
+        wp_send_json_success(__('Auction started', 'custom-auction-system'));
+    }
+
+    public static function end_auction() {
+        if (!isset($_POST['product_id']) || !current_user_can('manage_options')) {
+            wp_send_json_error(__('Invalid request', 'custom-auction-system'));
+        }
+
+        $product_id = intval($_POST['product_id']);
+        update_post_meta($product_id, '_auction_status', 'ended');
+        wp_send_json_success(__('Auction ended', 'custom-auction-system'));
     }
 }
 

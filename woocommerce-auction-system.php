@@ -40,3 +40,12 @@ function cas_enqueue_scripts() {
     wp_enqueue_style('cas-auction-css', CAS_PLUGIN_URL . 'css/auction.css');
     wp_enqueue_script('cas-auction-js', CAS_PLUGIN_URL . 'js/auction-frontend.js', array('jquery'), null, true);
 }
+
+function cas_enqueue_admin_scripts($hook) {
+    if ($hook !== 'toplevel_page_auction-dashboard') {
+        return;
+    }
+
+    wp_enqueue_script('cas-auction-admin-js', CAS_PLUGIN_URL . 'js/auction-frontend.js', array('jquery'), null, true);
+}
+add_action('admin_enqueue_scripts', 'cas_enqueue_admin_scripts');
