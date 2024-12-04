@@ -7,16 +7,13 @@ class Auction_Product {
     }
 
     public static function register_auction_product_type() {
-        class WC_Product_Auction extends WC_Product {
-            public function __construct($product) {
-                $this->product_type = 'auction';
-                parent::__construct($product);
-            }
+        if (class_exists('WC_Product')) {
+            include_once CAS_PLUGIN_DIR . 'includes/class-wc-product-auction.php';
         }
     }
 
     public static function add_auction_product_type($types) {
-        $types['auction'] = __('Auction');
+        $types['auction'] = __('Auction', 'custom-auction-system');
         return $types;
     }
 }
