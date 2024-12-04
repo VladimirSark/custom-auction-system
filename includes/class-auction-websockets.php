@@ -1,7 +1,9 @@
 <?php
 
 class Auction_Websockets {
-    // WebSocket functionality will go here
+    public static function initialize() {
+        // WebSocket functionality will go here
+    }
 }
 
 Auction_Websockets::initialize();

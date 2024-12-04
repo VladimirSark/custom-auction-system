@@ -30,6 +30,9 @@ function cas_initialize_plugin() {
 
     // Enqueue scripts and styles
     add_action('wp_enqueue_scripts', 'cas_enqueue_scripts');
+
+    // Initialize WebSockets
+    Auction_Websockets::initialize();
 }
 add_action('plugins_loaded', 'cas_initialize_plugin');
 
