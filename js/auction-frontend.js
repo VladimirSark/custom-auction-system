@@ -24,6 +24,7 @@ jQuery(document).ready(function($) {
     $('#register_for_auction_button').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');
+        console.log('Register for auction clicked. Product ID:', productId);
 
         $.ajax({
             url: cas_ajax_object.ajax_url,
@@ -33,12 +34,16 @@ jQuery(document).ready(function($) {
                 product_id: productId
             },
             success: function(response) {
+                console.log('Register for auction response:', response);
                 if (response.success) {
                     alert('Registration successful!');
                     location.reload();
                 } else {
                     alert(response.data);
                 }
+            },
+            error: function(xhr, status, error) {
+                console.log('Register for auction error:', error);
             }
         });
     });
@@ -47,6 +52,7 @@ jQuery(document).ready(function($) {
         e.preventDefault();
         var productId = $(this).data('product-id');
         var bidAmount = $('#bid_amount').val();
+        console.log('Place bid clicked. Product ID:', productId, 'Bid Amount:', bidAmount);
 
         $.ajax({
             url: cas_ajax_object.ajax_url,
@@ -57,12 +63,16 @@ jQuery(document).ready(function($) {
                 bid_amount: bidAmount
             },
             success: function(response) {
+                console.log('Place bid response:', response);
                 if (response.success) {
                     alert('Bid placed successfully!');
                     location.reload();
                 } else {
                     alert(response.data);
                 }
+            },
+            error: function(xhr, status, error) {
+                console.log('Place bid error:', error);
             }
         });
     });
@@ -70,6 +80,7 @@ jQuery(document).ready(function($) {
     $('.start-auction').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');
+        console.log('Start auction clicked. Product ID:', productId);
 
         $.ajax({
             url: cas_ajax_object.ajax_url,
@@ -79,12 +90,16 @@ jQuery(document).ready(function($) {
                 product_id: productId
             },
             success: function(response) {
+                console.log('Start auction response:', response);
                 if (response.success) {
                     alert(response.data);
                     location.reload();
                 } else {
                     alert(response.data);
                 }
+            },
+            error: function(xhr, status, error) {
+                console.log('Start auction error:', error);
             }
         });
     });
@@ -92,6 +107,7 @@ jQuery(document).ready(function($) {
     $('.end-auction').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');
+        console.log('End auction clicked. Product ID:', productId);
 
         $.ajax({
             url: cas_ajax_object.ajax_url,
@@ -101,12 +117,16 @@ jQuery(document).ready(function($) {
                 product_id: productId
             },
             success: function(response) {
+                console.log('End auction response:', response);
                 if (response.success) {
                     alert(response.data);
                     location.reload();
                 } else {
                     alert(response.data);
                 }
+            },
+            error: function(xhr, status, error) {
+                console.log('End auction error:', error);
             }
         });
     });

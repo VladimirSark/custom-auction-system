@@ -6,6 +6,7 @@ class Auction_Websockets {
         add_action('wp_ajax_nopriv_place_bid', array(__CLASS__, 'place_bid'));
         add_action('wp_ajax_place_bid', array(__CLASS__, 'place_bid'));
         add_action('wp_ajax_end_auction', array(__CLASS__, 'end_auction'));
+        add_action('wp_ajax_start_auction', array(__CLASS__, 'start_auction'));
         add_action('wp_ajax_register_for_auction', array(__CLASS__, 'register_for_auction'));
     }
 
@@ -76,6 +77,16 @@ class Auction_Websockets {
         } else {
             wp_send_json_error(__('No bids placed for this auction', 'custom-auction-system'));
         }
+    }
+
+    public static function start_auction() {
+        if (!isset($_POST['product_id']) || !current_user_can('manage_options')) {
+            wp_send_json_error(__('Invalid request', 'custom-auction-system'));
+        }
+
+        $product_id = intval($_POST['product_id']);
+        update_post_meta($product_id, '_auction_status', 'live');
+        wp_send_json_success(__('Auction started', 'custom-auction-system'));
     }
 
     public static function register_for_auction() {
