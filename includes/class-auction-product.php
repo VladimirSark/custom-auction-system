@@ -28,7 +28,7 @@ class Auction_Product {
         woocommerce_wp_select(array(
             'id' => '_auction_registration_fee',
             'label' => __('Registration Fee', 'custom-auction-system'),
-            'options' => self::get_fee_options(),
+            'options' => self::get_fee_options('registration_fee'),
         ));
 
         // Minimum Number of Participants
@@ -57,7 +57,7 @@ class Auction_Product {
         woocommerce_wp_select(array(
             'id' => '_auction_bid_cost',
             'label' => __('Bid Cost', 'custom-auction-system'),
-            'options' => self::get_fee_options(),
+            'options' => self::get_fee_options('bid_fee'),
         ));
 
         echo '</div>';
@@ -80,10 +80,11 @@ class Auction_Product {
         }
     }
 
-    private static function get_fee_options() {
+    private static function get_fee_options($fee_type) {
         $products = wc_get_products(array(
             'status' => 'publish',
             'limit' => -1,
+            'type' => $fee_type,
         ));
 
         $options = array();
