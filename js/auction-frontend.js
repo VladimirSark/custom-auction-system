@@ -1,4 +1,26 @@
 jQuery(document).ready(function($) {
+    function startCountdown(duration, display) {
+        var timer = duration, minutes, seconds;
+        setInterval(function() {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.text(minutes + ":" + seconds);
+
+            if (--timer < 0) {
+                timer = duration;
+            }
+        }, 1000);
+    }
+
+    if ($('#auction_timer').length) {
+        var auctionTimer = parseInt($('#auction_timer').text(), 10);
+        startCountdown(auctionTimer, $('#auction_timer'));
+    }
+
     $('#register_for_auction_button').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');

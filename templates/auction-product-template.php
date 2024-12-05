@@ -16,6 +16,7 @@ $current_highest_bidder = get_post_meta($product->get_id(), '_auction_highest_bi
 $auction_status = get_post_meta($product->get_id(), '_auction_status', true);
 $auction_winner = get_post_meta($product->get_id(), '_auction_winner', true);
 $registered_participants = get_post_meta($product->get_id(), '_auction_participants', true);
+$auction_end_time = get_post_meta($product->get_id(), '_auction_end_time', true);
 
 ?>
 
@@ -42,6 +43,10 @@ $registered_participants = get_post_meta($product->get_id(), '_auction_participa
             <button id="register_for_auction_button" data-product-id="<?php echo esc_attr($product->get_id()); ?>"><?php _e('Register', 'custom-auction-system'); ?></button>
         </div>
     <?php elseif ($auction_status === 'live') : ?>
+        <div class="auction-timer">
+            <h3><?php _e('Auction Timer', 'custom-auction-system'); ?></h3>
+            <p id="auction_timer"><?php echo esc_html($auction_timer); ?></p>
+        </div>
         <div class="place-bid">
             <h3><?php _e('Place Your Bid', 'custom-auction-system'); ?></h3>
             <input type="number" id="bid_amount" name="bid_amount" min="<?php echo esc_attr($current_highest_bid + 1); ?>" step="0.01">

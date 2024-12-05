@@ -29,6 +29,11 @@ class Auction_Websockets {
         update_post_meta($product_id, '_auction_highest_bid', $bid_amount);
         update_post_meta($product_id, '_auction_highest_bidder', $user_id);
 
+        // Update auction end time
+        $auction_timer = get_post_meta($product_id, '_auction_timer', true);
+        $new_end_time = time() + intval($auction_timer);
+        update_post_meta($product_id, '_auction_end_time', $new_end_time);
+
         // Notify previous highest bidder
         if ($current_highest_bidder && $current_highest_bidder != $user_id) {
             $previous_bidder = get_userdata($current_highest_bidder);
