@@ -4,6 +4,7 @@ defined('ABSPATH') || exit;
 global $product;
 
 if ($product->get_type() !== 'auction') {
+    error_log('Product type is not auction in template.');
     return;
 }
 
@@ -18,6 +19,18 @@ $auction_winner = get_post_meta($product->get_id(), '_auction_winner', true);
 $registered_participants = get_post_meta($product->get_id(), '_auction_participants', true);
 $auction_end_time = get_post_meta($product->get_id(), '_auction_end_time', true);
 
+error_log('Auction product details: ' . print_r(array(
+    'registration_fee' => $registration_fee,
+    'min_participants' => $min_participants,
+    'auction_timer' => $auction_timer,
+    'bid_cost' => $bid_cost,
+    'current_highest_bid' => $current_highest_bid,
+    'current_highest_bidder' => $current_highest_bidder,
+    'auction_status' => $auction_status,
+    'auction_winner' => $auction_winner,
+    'registered_participants' => $registered_participants,
+    'auction_end_time' => $auction_end_time,
+), true));
 ?>
 
 <div class="auction-details">
