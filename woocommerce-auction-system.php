@@ -39,6 +39,7 @@ add_action('plugins_loaded', 'cas_initialize_plugin');
 function cas_enqueue_scripts() {
     wp_enqueue_style('cas-auction-css', CAS_PLUGIN_URL . 'css/auction.css');
     wp_enqueue_script('cas-auction-js', CAS_PLUGIN_URL . 'js/auction-frontend.js', array('jquery'), null, true);
+    wp_localize_script('cas-auction-js', 'ajaxurl', admin_url('admin-ajax.php'));
 }
 
 function cas_enqueue_admin_scripts($hook) {
