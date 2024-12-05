@@ -23,7 +23,7 @@ include_once CAS_PLUGIN_DIR . 'includes/class-auction-fee-product.php';
 function cas_initialize_plugin() {
     // Register custom product types
     Auction_Product::register_product_type();
-    Auction_Fee_Product::register_fee_product_types();
+    Auction_Fee_Product::register_fee_product_type();
 
     // Enqueue scripts and styles
     add_action('wp_enqueue_scripts', 'cas_enqueue_scripts');
