@@ -26,7 +26,7 @@ jQuery(document).ready(function($) {
         var productId = $(this).data('product-id');
 
         $.ajax({
-            url: ajaxurl,
+            url: cas_ajax_object.ajax_url,
             type: 'POST',
             data: {
                 action: 'register_for_auction',
@@ -49,7 +49,7 @@ jQuery(document).ready(function($) {
         var bidAmount = $('#bid_amount').val();
 
         $.ajax({
-            url: ajaxurl,
+            url: cas_ajax_object.ajax_url,
             type: 'POST',
             data: {
                 action: 'place_bid',
@@ -72,7 +72,7 @@ jQuery(document).ready(function($) {
         var productId = $(this).data('product-id');
 
         $.ajax({
-            url: ajaxurl,
+            url: cas_ajax_object.ajax_url,
             type: 'POST',
             data: {
                 action: 'start_auction',
@@ -94,7 +94,7 @@ jQuery(document).ready(function($) {
         var productId = $(this).data('product-id');
 
         $.ajax({
-            url: ajaxurl,
+            url: cas_ajax_object.ajax_url,
             type: 'POST',
             data: {
                 action: 'end_auction',
