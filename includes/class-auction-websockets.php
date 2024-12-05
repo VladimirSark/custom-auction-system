@@ -6,6 +6,7 @@ class Auction_Websockets {
         add_action('wp_ajax_nopriv_place_bid', array(__CLASS__, 'place_bid'));
         add_action('wp_ajax_place_bid', array(__CLASS__, 'place_bid'));
         add_action('wp_ajax_end_auction', array(__CLASS__, 'end_auction'));
+        add_action('wp_ajax_register_for_auction', array(__CLASS__, 'register_for_auction'));
     }
 
     public static function place_bid() {
@@ -70,6 +71,39 @@ class Auction_Websockets {
         } else {
             wp_send_json_error(__('No bids placed for this auction', 'custom-auction-system'));
         }
+    }
+
+    public static function register_for_auction() {
+        if (!isset($_POST['product_id']) || !is_user_logged_in()) {
+            wp_send_json_error(__('Invalid request', 'custom-auction-system'));
+        }
+
+        $product_id = intval($_POST['product_id']);
+        $user_id = get_current_user_id();
+
+        // Check if user is already registered
+        $registered_participants = get_post_meta($product_id, '_auction_participants', true);
+        if (is_array($registered_participants) && in_array($user_id, $registered_participants)) {
+            wp_send_json_error(__('You are already registered for this auction', 'custom-auction-system'));
+        }
+
+        // Charge registration fee
+        $registration_fee = get_post_meta($product_id, '_auction_registration_fee', true);
+        if ($registration_fee) {
+            $order = wc_create_order();
+            $order->add_product(wc_get_product($registration_fee), 1);
+            $order->set_customer_id($user_id);
+            $order->calculate_totals();
+        }
+
+        // Register the user
+        if (!is_array($registered_participants)) {
+            $registered_participants = array();
+        }
+        $registered_participants[] = $user_id;
+        update_post_meta($product_id, '_auction_participants', $registered_participants);
+
+        wp_send_json_success(__('Registration successful', 'custom-auction-system'));
     }
 }
 

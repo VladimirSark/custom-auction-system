@@ -1,4 +1,26 @@
 jQuery(document).ready(function($) {
+    $('#register_for_auction_button').on('click', function(e) {
+        e.preventDefault();
+        var productId = $(this).data('product-id');
+
+        $.ajax({
+            url: ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'register_for_auction',
+                product_id: productId
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Registration successful!');
+                    location.reload();
+                } else {
+                    alert(response.data);
+                }
+            }
+        });
+    });
+
     $('#place_bid_button').on('click', function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');

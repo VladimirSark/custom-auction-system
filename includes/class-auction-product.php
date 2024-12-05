@@ -73,6 +73,11 @@ class Auction_Product {
         update_post_meta($post_id, '_auction_min_participants', $min_participants);
         update_post_meta($post_id, '_auction_timer', $auction_timer);
         update_post_meta($post_id, '_auction_bid_cost', $bid_cost);
+
+        // Set default auction status to upcoming
+        if (!get_post_meta($post_id, '_auction_status', true)) {
+            update_post_meta($post_id, '_auction_status', 'upcoming');
+        }
     }
 
     private static function get_fee_options() {

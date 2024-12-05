@@ -15,6 +15,7 @@ $current_highest_bid = get_post_meta($product->get_id(), '_auction_highest_bid',
 $current_highest_bidder = get_post_meta($product->get_id(), '_auction_highest_bidder', true);
 $auction_status = get_post_meta($product->get_id(), '_auction_status', true);
 $auction_winner = get_post_meta($product->get_id(), '_auction_winner', true);
+$registered_participants = get_post_meta($product->get_id(), '_auction_participants', true);
 
 ?>
 
@@ -26,6 +27,7 @@ $auction_winner = get_post_meta($product->get_id(), '_auction_winner', true);
     <p><?php _e('Bid Cost:', 'custom-auction-system'); ?> <?php echo wc_price($bid_cost); ?></p>
     <p><?php _e('Current Highest Bid:', 'custom-auction-system'); ?> <?php echo wc_price($current_highest_bid); ?></p>
     <p><?php _e('Current Highest Bidder:', 'custom-auction-system'); ?> <?php echo esc_html($current_highest_bidder); ?></p>
+    <p><?php _e('Registered Participants:', 'custom-auction-system'); ?> <?php echo esc_html($registered_participants); ?></p>
 </div>
 
 <?php if ($auction_status === 'ended') : ?>
@@ -34,11 +36,18 @@ $auction_winner = get_post_meta($product->get_id(), '_auction_winner', true);
         <p><?php _e('Winner:', 'custom-auction-system'); ?> <?php echo esc_html($auction_winner); ?></p>
     </div>
 <?php elseif (is_user_logged_in()) : ?>
-    <div class="place-bid">
-        <h3><?php _e('Place Your Bid', 'custom-auction-system'); ?></h3>
-        <input type="number" id="bid_amount" name="bid_amount" min="<?php echo esc_attr($current_highest_bid + 1); ?>" step="0.01">
-        <button id="place_bid_button" data-product-id="<?php echo esc_attr($product->get_id()); ?>"><?php _e('Place Bid', 'custom-auction-system'); ?></button>
-    </div>
+    <?php if ($auction_status === 'upcoming') : ?>
+        <div class="register-for-auction">
+            <h3><?php _e('Register for Auction', 'custom-auction-system'); ?></h3>
+            <button id="register_for_auction_button" data-product-id="<?php echo esc_attr($product->get_id()); ?>"><?php _e('Register', 'custom-auction-system'); ?></button>
+        </div>
+    <?php elseif ($auction_status === 'live') : ?>
+        <div class="place-bid">
+            <h3><?php _e('Place Your Bid', 'custom-auction-system'); ?></h3>
+            <input type="number" id="bid_amount" name="bid_amount" min="<?php echo esc_attr($current_highest_bid + 1); ?>" step="0.01">
+            <button id="place_bid_button" data-product-id="<?php echo esc_attr($product->get_id()); ?>"><?php _e('Place Bid', 'custom-auction-system'); ?></button>
+        </div>
+    <?php endif; ?>
 <?php else : ?>
-    <p><?php _e('You must be logged in to place a bid.', 'custom-auction-system'); ?></p>
+    <p><?php _e('You must be logged in to participate in the auction.', 'custom-auction-system'); ?></p>
 <?php endif; ?>
