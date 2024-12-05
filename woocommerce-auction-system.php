@@ -33,6 +33,9 @@ function cas_initialize_plugin() {
 
     // Initialize WebSockets
     Auction_Websockets::initialize();
+
+    // Log message to verify plugin activation
+    error_log('Custom Auction System plugin initialized.');
 }
 add_action('plugins_loaded', 'cas_initialize_plugin');
 

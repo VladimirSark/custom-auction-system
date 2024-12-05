@@ -8,9 +8,14 @@ class Auction_Websockets {
         add_action('wp_ajax_end_auction', array(__CLASS__, 'end_auction'));
         add_action('wp_ajax_start_auction', array(__CLASS__, 'start_auction'));
         add_action('wp_ajax_register_for_auction', array(__CLASS__, 'register_for_auction'));
+
+        // Log message to verify AJAX handlers initialization
+        error_log('Auction_Websockets initialized.');
     }
 
     public static function place_bid() {
+        error_log('place_bid AJAX handler called.');
+
         if (!isset($_POST['product_id']) || !isset($_POST['bid_amount']) || !is_user_logged_in()) {
             wp_send_json_error(__('Invalid request', 'custom-auction-system'));
         }
@@ -49,6 +54,8 @@ class Auction_Websockets {
     }
 
     public static function end_auction() {
+        error_log('end_auction AJAX handler called.');
+
         if (!isset($_POST['product_id']) || !current_user_can('manage_options')) {
             wp_send_json_error(__('Invalid request', 'custom-auction-system'));
         }
@@ -80,6 +87,8 @@ class Auction_Websockets {
     }
 
     public static function start_auction() {
+        error_log('start_auction AJAX handler called.');
+
         if (!isset($_POST['product_id']) || !current_user_can('manage_options')) {
             wp_send_json_error(__('Invalid request', 'custom-auction-system'));
         }
@@ -90,6 +99,8 @@ class Auction_Websockets {
     }
 
     public static function register_for_auction() {
+        error_log('register_for_auction AJAX handler called.');
+
         if (!isset($_POST['product_id']) || !is_user_logged_in()) {
             wp_send_json_error(__('Invalid request', 'custom-auction-system'));
         }
