@@ -7,8 +7,8 @@ if (class_exists('WC_Product')) {
             parent::__construct($product);
         }
 
-        public function get_price_html($price = '') {
-            return wc_price($this->get_price());
+        public function get_type() {
+            return 'bid_fee';
         }
     }
 }
