@@ -29,7 +29,6 @@ function add_auction_product($types) {
 }
 add_filter('product_type_selector', 'add_auction_product');
 
-<?php
 // Add custom fields to the Auction product type
 function auction_custom_fields() {
     global $post;
