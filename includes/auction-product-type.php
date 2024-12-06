@@ -111,37 +111,6 @@ function save_auction_custom_fields($post_id) {
 }
 add_action('woocommerce_process_product_meta', 'save_auction_custom_fields');
 
-// Add custom fields to the Participant Fee product type
-function participant_fee_custom_fields() {
-    global $post;
-
-    echo '<div class="options_group show_if_participant_fee">';
-
-    // Fee Amount
-    woocommerce_wp_text_input(
-        array(
-            'id' => '_participant_fee_amount',
-            'label' => __('Fee Amount', 'woocommerce'),
-            'type' => 'number',
-            'custom_attributes' => array(
-                'step' => '0.01',
-                'min' => '0',
-            ),
-        )
-    );
-
-    echo '</div>';
-}
-add_action('woocommerce_product_options_general_product_data', 'participant_fee_custom_fields');
-
-// Save custom fields for Participant Fee
-function save_participant_fee_custom_fields($post_id) {
-    $participant_fee_amount = isset($_POST['_participant_fee_amount']) ? floatval($_POST['_participant_fee_amount']) : '';
-
-    update_post_meta($post_id, '_participant_fee_amount', $participant_fee_amount);
-}
-add_action('woocommerce_process_product_meta', 'save_participant_fee_custom_fields');
-
 // Add progress bar and registration button to the auction product page
 function display_auction_progress_bar_and_button() {
     global $product;
@@ -173,3 +142,34 @@ function get_current_participants($product_id) {
     // For example, you might store the number of participants in post meta or a custom table.
     return 5; // Replace this with the actual logic
 }
+
+// Add custom fields to the Participant Fee product type
+function participant_fee_custom_fields() {
+    global $post;
+
+    echo '<div class="options_group show_if_participant_fee">';
+
+    // Fee Amount
+    woocommerce_wp_text_input(
+        array(
+            'id' => '_participant_fee_amount',
+            'label' => __('Fee Amount', 'woocommerce'),
+            'type' => 'number',
+            'custom_attributes' => array(
+                'step' => '0.01',
+                'min' => '0',
+            ),
+        )
+    );
+
+    echo '</div>';
+}
+add_action('woocommerce_product_options_general_product_data', 'participant_fee_custom_fields');
+
+// Save custom fields for Participant Fee
+function save_participant_fee_custom_fields($post_id) {
+    $participant_fee_amount = isset($_POST['_participant_fee_amount']) ? floatval($_POST['_participant_fee_amount']) : '';
+
+    update_post_meta($post_id, '_participant_fee_amount', $participant_fee_amount);
+}
+add_action('woocommerce_process_product_meta', 'save_participant_fee_custom_fields');
