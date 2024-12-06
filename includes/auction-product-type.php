@@ -157,6 +157,7 @@ function display_register_button() {
 }
 add_action('woocommerce_single_product_summary', 'display_register_button', 35);
 
+<?php
 // Count the number of registered participants
 function get_registered_participants($product_id) {
     $participant_fee_id = get_post_meta($product_id, '_participant_fee', true);
@@ -167,13 +168,6 @@ function get_registered_participants($product_id) {
     $args = array(
         'status' => 'completed',
         'limit' => -1,
-        'meta_query' => array(
-            array(
-                'key' => '_product_id',
-                'value' => $participant_fee_id,
-                'compare' => '=',
-            ),
-        ),
     );
 
     $orders = wc_get_orders($args);
