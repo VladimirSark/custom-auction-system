@@ -19,6 +19,13 @@ $auction_winner = get_post_meta($product->get_id(), '_auction_winner', true);
 $registered_participants = get_post_meta($product->get_id(), '_auction_participants', true);
 $auction_end_time = get_post_meta($product->get_id(), '_auction_end_time', true);
 
+if (!is_array($registered_participants)) {
+    $registered_participants = array();
+}
+
+$registered_count = count($registered_participants);
+$progress_percent = ($registered_count / $min_participants) * 100;
+
 error_log('Auction product details: ' . print_r(array(
     'registration_fee' => $registration_fee,
     'min_participants' => $min_participants,
@@ -30,6 +37,8 @@ error_log('Auction product details: ' . print_r(array(
     'auction_winner' => $auction_winner,
     'registered_participants' => $registered_participants,
     'auction_end_time' => $auction_end_time,
+    'registered_count' => $registered_count,
+    'progress_percent' => $progress_percent,
 ), true));
 ?>
 
@@ -41,7 +50,10 @@ error_log('Auction product details: ' . print_r(array(
     <p><?php _e('Bid Cost:', 'custom-auction-system'); ?> <?php echo wc_price($bid_cost); ?></p>
     <p><?php _e('Current Highest Bid:', 'custom-auction-system'); ?> <?php echo wc_price($current_highest_bid); ?></p>
     <p><?php _e('Current Highest Bidder:', 'custom-auction-system'); ?> <?php echo esc_html($current_highest_bidder); ?></p>
-    <p><?php _e('Registered Participants:', 'custom-auction-system'); ?> <?php echo esc_html($registered_participants); ?></p>
+    <p><?php _e('Registered Participants:', 'custom-auction-system'); ?> <?php echo esc_html($registered_count); ?> / <?php echo esc_html($min_participants); ?></p>
+    <div class="progress-bar">
+        <div class="progress" style="width: <?php echo esc_attr($progress_percent); ?>%;"></div>
+    </div>
 </div>
 
 <?php if ($auction_status === 'ended') : ?>
