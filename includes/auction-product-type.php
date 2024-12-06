@@ -142,45 +142,35 @@ function save_participant_fee_custom_fields($post_id) {
 }
 add_action('woocommerce_process_product_meta', 'save_participant_fee_custom_fields');
 
+// Handle simulated registration process
+function handle_simulated_registration() {
+    if (isset($_POST['auction_register']) && isset($_POST['product_id'])) {
+        $product_id = intval($_POST['product_id']);
+        $registered_participants = get_post_meta($product_id, '_registered_participants', true);
+        $registered_participants = $registered_participants ? intval($registered_participants) : 0;
+        $registered_participants++;
+        update_post_meta($product_id, '_registered_participants', $registered_participants);
+    }
+}
+add_action('init', 'handle_simulated_registration');
+
 // Display Register button on the auction product page
 function display_register_button() {
     global $product;
 
     if ($product->get_type() == 'auction') {
-        $participant_fee_id = get_post_meta($product->get_id(), '_participant_fee', true);
-        if ($participant_fee_id) {
-            echo '<form class="cart" method="post" enctype="multipart/form-data">';
-            echo '<button type="submit" name="add-to-cart" value="' . esc_attr($participant_fee_id) . '" class="single_add_to_cart_button button alt">' . __('Register', 'woocommerce') . '</button>';
-            echo '</form>';
-        }
+        echo '<form method="post">';
+        echo '<input type="hidden" name="product_id" value="' . esc_attr($product->get_id()) . '">';
+        echo '<button type="submit" name="auction_register" class="single_add_to_cart_button button alt">' . __('Register', 'woocommerce') . '</button>';
+        echo '</form>';
     }
 }
 add_action('woocommerce_single_product_summary', 'display_register_button', 35);
 
 // Count the number of registered participants
 function get_registered_participants($product_id) {
-    $participant_fee_id = get_post_meta($product_id, '_participant_fee', true);
-    if (!$participant_fee_id) {
-        return 0;
-    }
-
-    $args = array(
-        'status' => 'completed',
-        'limit' => -1,
-    );
-
-    $orders = wc_get_orders($args);
-    $count = 0;
-
-    foreach ($orders as $order) {
-        foreach ($order->get_items() as $item) {
-            if ($item->get_product_id() == $participant_fee_id) {
-                $count += $item->get_quantity();
-            }
-        }
-    }
-
-    return $count;
+    $registered_participants = get_post_meta($product_id, '_registered_participants', true);
+    return $registered_participants ? intval($registered_participants) : 0;
 }
 
 // Display progress bar on the auction product page
