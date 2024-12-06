@@ -141,3 +141,26 @@ function save_participant_fee_custom_fields($post_id) {
     update_post_meta($post_id, '_participant_fee_amount', $participant_fee_amount);
 }
 add_action('woocommerce_process_product_meta', 'save_participant_fee_custom_fields');
+
+// Add progress bar to the auction product page
+function display_auction_progress_bar() {
+    global $product;
+
+    if ($product->get_type() === 'auction') {
+        $min_participants = get_post_meta($product->get_id(), '_min_participants', true);
+        $current_participants = get_current_participants($product->get_id()); // You need to implement this function
+        $progress = ($current_participants / $min_participants) * 100;
+
+        echo '<div class="auction-progress-bar">';
+        echo '<div id="auction-progress-bar-fill" class="auction-progress-bar-fill" data-progress="' . esc_attr($progress) . '"></div>';
+        echo '</div>';
+    }
+}
+add_action('woocommerce_single_product_summary', 'display_auction_progress_bar', 20);
+
+// Implement the function to get current participants
+function get_current_participants($product_id) {
+    // This is a placeholder function. You need to implement the logic to get the current number of participants.
+    // For example, you might store the number of participants in post meta or a custom table.
+    return 5; // Replace this with the actual logic
+}

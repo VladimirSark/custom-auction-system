@@ -1,0 +1,18 @@
+.auction-progress-bar {
+    width: 100%;
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.auction-progress-bar-fill {
+    height: 20px;
+    background-color: #4caf50;
+    width: 0;
+    text-align: center;
+    color: white;
+    line-height: 20px;
+    border-radius: 5px;
+}

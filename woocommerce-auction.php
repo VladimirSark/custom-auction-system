@@ -29,3 +29,11 @@ function woocommerce_auction_init() {
 function woocommerce_inactive_notice() {
     echo '<div class="error"><p><strong>WooCommerce Auction</strong> requires WooCommerce to be installed and active.</p></div>';
 }
+
+function enqueue_auction_scripts() {
+    if (is_product()) {
+        wp_enqueue_style('auction-style', plugin_dir_url(__FILE__) . 'assets/css/auction-style.css');
+        wp_enqueue_script('auction-script', plugin_dir_url(__FILE__) . 'assets/js/auction-script.js', array('jquery'), null, true);
+    }
+}
+add_action('wp_enqueue_scripts', 'enqueue_auction_scripts');
