@@ -22,6 +22,7 @@ function woocommerce_auction_init() {
     // Include the necessary files
     include_once plugin_dir_path(__FILE__) . 'includes/class-wc-product-auction.php';
     include_once plugin_dir_path(__FILE__) . 'includes/class-wc-product-participant-fee.php';
+    include_once plugin_dir_path(__FILE__) . 'includes/class-wc-product-bid-cost.php';
     include_once plugin_dir_path(__FILE__) . 'includes/auction-product-type.php';
 }
 

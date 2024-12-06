@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
 function register_custom_product_types() {
     include_once plugin_dir_path(__FILE__) . 'class-wc-product-auction.php';
     include_once plugin_dir_path(__FILE__) . 'class-wc-product-participant-fee.php';
+    include_once plugin_dir_path(__FILE__) . 'class-wc-product-bid-cost.php';
 }
 add_action('woocommerce_loaded', 'register_custom_product_types');
 
@@ -15,6 +16,7 @@ add_action('woocommerce_loaded', 'register_custom_product_types');
 function add_custom_product_types($types) {
     $types['auction'] = __('Auction');
     $types['participant_fee'] = __('Participant Fee');
+    $types['bid_cost'] = __('Bid Cost');
     return $types;
 }
 add_filter('product_type_selector', 'add_custom_product_types');
@@ -32,6 +34,17 @@ function auction_custom_fields() {
     $participant_fee_options = array('' => __('Select a fee', 'woocommerce'));
     foreach ($participant_fee_products as $product) {
         $participant_fee_options[$product->get_id()] = $product->get_name();
+    }
+
+    // Get Bid Cost products
+    $bid_cost_products = wc_get_products(array(
+        'type' => 'bid_cost',
+        'limit' => -1,
+    ));
+
+    $bid_cost_options = array('' => __('Select a bid cost', 'woocommerce'));
+    foreach ($bid_cost_products as $product) {
+        $bid_cost_options[$product->get_id()] = $product->get_name();
     }
 
     echo '<div class="options_group show_if_auction">';
@@ -76,10 +89,7 @@ function auction_custom_fields() {
         array(
             'id' => '_bid_cost',
             'label' => __('Bid Cost', 'woocommerce'),
-            'options' => array(
-                '' => __('Select a bid cost', 'woocommerce'),
-                // Add options dynamically later
-            ),
+            'options' => $bid_cost_options,
         )
     );
 
