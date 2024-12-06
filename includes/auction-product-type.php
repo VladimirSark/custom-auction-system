@@ -142,8 +142,8 @@ function save_participant_fee_custom_fields($post_id) {
 }
 add_action('woocommerce_process_product_meta', 'save_participant_fee_custom_fields');
 
-// Add progress bar to the auction product page
-function display_auction_progress_bar() {
+// Add progress bar and registration button to the auction product page
+function display_auction_progress_bar_and_button() {
     global $product;
 
     if ($product->get_type() === 'auction') {
@@ -151,12 +151,21 @@ function display_auction_progress_bar() {
         $current_participants = get_current_participants($product->get_id()); // You need to implement this function
         $progress = ($current_participants / $min_participants) * 100;
 
+        echo '<h3>Participants Registration Progress</h3>';
         echo '<div class="auction-progress-bar">';
         echo '<div id="auction-progress-bar-fill" class="auction-progress-bar-fill" data-progress="' . esc_attr($progress) . '"></div>';
         echo '</div>';
+
+        $participant_fee_id = get_post_meta($product->get_id(), '_participant_fee', true);
+        if ($participant_fee_id) {
+            echo '<form method="post" class="auction-registration-form">';
+            echo '<input type="hidden" name="add-to-cart" value="' . esc_attr($participant_fee_id) . '">';
+            echo '<button type="submit" class="button alt">Register for Auction</button>';
+            echo '</form>';
+        }
     }
 }
-add_action('woocommerce_single_product_summary', 'display_auction_progress_bar', 20);
+add_action('woocommerce_single_product_summary', 'display_auction_progress_bar_and_button', 20);
 
 // Implement the function to get current participants
 function get_current_participants($product_id) {
