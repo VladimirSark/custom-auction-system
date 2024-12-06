@@ -9,7 +9,7 @@ function register_custom_product_types() {
     include_once plugin_dir_path(__FILE__) . 'class-wc-product-auction.php';
     include_once plugin_dir_path(__FILE__) . 'class-wc-product-participant-fee.php';
 }
-add_action('init', 'register_custom_product_types');
+add_action('woocommerce_loaded', 'register_custom_product_types');
 
 // Add the custom product types to the product type selector
 function add_custom_product_types($types) {
